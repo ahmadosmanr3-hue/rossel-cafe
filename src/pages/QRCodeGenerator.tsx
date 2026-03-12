@@ -14,7 +14,7 @@ interface QRCodeGeneratorProps {
 export default function QRCodeGenerator({ baseUrl: initialBaseUrl }: QRCodeGeneratorProps) {
   const { t } = useLanguage();
   const [baseUrl, setBaseUrl] = useState(initialBaseUrl || 'http://localhost:3000');
-  const [tableCount, setTableCount] = useState(10);
+  const [tableCount, setTableCount] = useState(25);
 
   const tables = Array.from({ length: tableCount }, (_, i) => i + 1);
 
@@ -60,52 +60,6 @@ export default function QRCodeGenerator({ baseUrl: initialBaseUrl }: QRCodeGener
           <Printer size={18} />
           {t('printAll')}
         </button>
-      </div>
-
-      {/* Deployment Guidance */}
-      <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6 space-y-4 print:hidden">
-        <div className="flex items-start gap-3">
-          <div className="p-2 bg-blue-500/20 rounded-lg text-blue-400">
-            <Globe size={20} />
-          </div>
-          <div>
-            <h3 className="font-bold text-blue-400">{t('testingTip')}</h3>
-            <p className="text-sm text-gray-400 mt-1">{t('localhostWarning')}</p>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-          <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{t('usePublicUrl')}</p>
-            <p className="text-sm text-gray-300">{t('vercelSuggestion')}</p>
-            <a 
-              href="https://vercel.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-block mt-3 text-sm text-[var(--color-purple-400)] hover:underline"
-            >
-              vercel.com →
-            </a>
-          </div>
-          
-          <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{t('useLocalIp')}</p>
-            <div className="flex items-center gap-2">
-              <code className="bg-black/30 px-2 py-1 rounded text-[var(--color-gold-400)] text-sm">http://192.168.97.81:3000</code>
-              <button 
-                onClick={() => {
-                  setBaseUrl('http://192.168.97.81:3000');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="text-xs bg-white/10 hover:bg-white/20 px-2 py-1 rounded transition-colors"
-                title="Copy to Base URL"
-              >
-                Apply
-              </button>
-            </div>
-            <p className="text-xs text-gray-500 mt-2">{t('localIpNote')}</p>
-          </div>
-        </div>
       </div>
 
       {/* QR Code Grid */}
