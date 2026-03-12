@@ -152,6 +152,27 @@ export const db = {
     return order;
   },
 
+  async updateOrderItems(id: string, items: any[], totalPrice: number) {
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('orders')
+        .update({ items_json: items, total_price_iqd: totalPrice })
+        .eq('id', id)
+        .select();
+      if (error) throw error;
+      return data[0];
+    }
+    await delay(200);
+    const orders = loadMockOrders();
+    const order = orders.find((o: any) => o.id === id);
+    if (order) {
+      order.items_json = items;
+      order.total_price_iqd = totalPrice;
+      saveMockOrders(orders);
+    }
+    return order;
+  },
+
   async getOrdersByDateRange(startDate: string, endDate: string) {
     if (supabase) {
       const { data, error } = await supabase

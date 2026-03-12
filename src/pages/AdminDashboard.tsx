@@ -212,6 +212,49 @@ export default function AdminDashboard() {
     { key: 'qrcodes' as const, icon: <QrCode size={20} />, label: t('qrCodes') },
   ];
 
+  const [editingExtrasId, setEditingExtrasId] = useState<string | null>(null);
+  const [extraWaterQty, setExtraWaterQty] = useState(1);
+  const [extraServiceFee, setExtraServiceFee] = useState(0);
+
+  const handleAddExtras = async (order: any) => {
+    let newItems = [...(order.items_json || [])];
+    let newTotal = order.total_price_iqd || 0;
+
+    // Add Water
+    if (extraWaterQty > 0) {
+      const waterPrice = 250;
+      const existingWaterIdx = newItems.findIndex(i => i.name_en === 'Water' || i.name_ku === 'ئاو');
+      if (existingWaterIdx > -1) {
+        newItems[existingWaterIdx].quantity += extraWaterQty;
+      } else {
+        newItems.push({
+          name_en: 'Water',
+          name_ku: 'ئاو',
+          price: waterPrice,
+          quantity: extraWaterQty
+        });
+      }
+      newTotal += waterPrice * extraWaterQty;
+    }
+
+    // Add Service Fee
+    if (extraServiceFee > 0) {
+      newItems.push({
+        name_en: 'Service Fee',
+        name_ku: 'خزمەتگوزاری',
+        price: extraServiceFee,
+        quantity: 1
+      });
+      newTotal += extraServiceFee;
+    }
+
+    await db.updateOrderItems(order.id, newItems, newTotal);
+    setEditingExtrasId(null);
+    setExtraWaterQty(1);
+    setExtraServiceFee(0);
+    fetchOrders();
+  };
+
   return (
     <div className="min-h-screen bg-[var(--color-navy-900)] text-white font-sans flex flex-col md:flex-row">
       {/* Sidebar */}
@@ -339,22 +382,70 @@ export default function AdminDashboard() {
                     </div>
                   )}
                   
-                  <div className="pt-3 border-t border-white/10 flex justify-between items-center">
-                    <div>
-                      <p className="text-xs text-gray-500">{t('total')}</p>
-                      <p className="text-lg font-bold text-[var(--color-gold-400)]">{order.total_price_iqd?.toLocaleString()} IQD</p>
+                  <div className="pt-3 border-t border-white/10">
+                    <div className="flex justify-between items-center mb-3">
+                      <div>
+                        <p className="text-xs text-gray-500">{t('total')}</p>
+                        <p className="text-lg font-bold text-[var(--color-gold-400)]">{order.total_price_iqd?.toLocaleString()} IQD</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => setEditingExtrasId(editingExtrasId === order.id ? null : order.id)}
+                          className="px-3 py-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg text-sm transition-colors flex items-center gap-2"
+                        >
+                          <PlusCircle size={16} />
+                          {t('addExtras')}
+                        </button>
+                        {getNextStatus(order.status) && (
+                          <button 
+                            onClick={() => handleUpdateStatus(order.id, getNextStatus(order.status)!)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              order.status === 'pending' ? 'bg-orange-500 hover:bg-orange-600 text-white' :
+                              order.status === 'preparing' ? 'bg-blue-500 hover:bg-blue-600 text-white' :
+                              'bg-green-500 hover:bg-green-600 text-white'
+                            }`}
+                          >
+                            {getNextStatusLabel(order.status)}
+                          </button>
+                        )}
+                      </div>
                     </div>
-                    {getNextStatus(order.status) && (
-                      <button 
-                        onClick={() => handleUpdateStatus(order.id, getNextStatus(order.status)!)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          order.status === 'pending' ? 'bg-orange-500 hover:bg-orange-600 text-white' :
-                          order.status === 'preparing' ? 'bg-blue-500 hover:bg-blue-600 text-white' :
-                          'bg-green-500 hover:bg-green-600 text-white'
-                        }`}
-                      >
-                        {getNextStatusLabel(order.status)}
-                      </button>
+
+                    {/* Extras Form */}
+                    {editingExtrasId === order.id && (
+                      <div className="bg-white/5 rounded-xl p-3 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-[10px] text-gray-500 uppercase mb-1">{t('water')} (250 IQD)</label>
+                            <input 
+                              type="number" 
+                              min="0"
+                              value={extraWaterQty} 
+                              onChange={e => setExtraWaterQty(parseInt(e.target.value) || 0)}
+                              className="w-full bg-[var(--color-navy-900)] border border-white/10 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[var(--color-purple-500)]"
+                              placeholder={t('quantity')}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] text-gray-500 uppercase mb-1">{t('serviceFee')}</label>
+                            <input 
+                              type="number" 
+                              min="0"
+                              step="250"
+                              value={extraServiceFee} 
+                              onChange={e => setExtraServiceFee(parseInt(e.target.value) || 0)}
+                              className="w-full bg-[var(--color-navy-900)] border border-white/10 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[var(--color-purple-500)]"
+                              placeholder={t('amount')}
+                            />
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => handleAddExtras(order)}
+                          className="w-full py-2 bg-[var(--color-purple-500)] hover:bg-[var(--color-purple-600)] text-white rounded-lg text-sm font-medium transition-colors"
+                        >
+                          {t('add')}
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>

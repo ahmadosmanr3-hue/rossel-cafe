@@ -100,6 +100,12 @@ export const translations = {
     vercelSuggestion: 'Deploy to Vercel for a permanent public link.',
     useLocalIp: 'Use Local IP (Quick Test)',
     localIpNote: 'Only works if your phone and computer are on the same Wi-Fi.',
+    addExtras: 'Add Extras',
+    serviceFee: 'Service Fee',
+    water: 'Water',
+    quantity: 'Quantity',
+    amount: 'Amount',
+    add: 'Add',
   },
   ku: {
     menu: 'مینیو',
@@ -202,5 +208,11 @@ export const translations = {
     vercelSuggestion: 'پڕۆژەکە لە Vercel دابنێ بۆ بەدەستهێنانی بەستەرێکی هەمیشەیی.',
     useLocalIp: 'ئایپی ناوخۆیی بەکاربهێنە (بۆ تاقیکردنەوەی خێرا)',
     localIpNote: 'تەنها کاتێک کار دەکات کە مۆبایل و کۆمپیوتەرەکەت لەسەر هەمان وایفای بن.',
+    addExtras: 'زیادکردنی خزمەتگوزاری',
+    serviceFee: 'خزمەتگوزاری',
+    water: 'ئاو',
+    quantity: 'بڕ',
+    amount: 'بڕی پارە',
+    add: 'زیادکردن',
   }
 };
