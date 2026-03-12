@@ -1,0 +1,5 @@
+{
+  "name": "ROSEL Cafe Ordering System",
+  "description": "A bilingual (Kurdish Sorani & English) web application for a cafe that allows customers to order from their tables via QR codes and provides a real-time admin dashboard for staff.",
+  "requestFramePermissions": []
+}
