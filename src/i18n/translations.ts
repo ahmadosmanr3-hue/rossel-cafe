@@ -50,7 +50,7 @@ export const translations = {
     backToMenu: 'Back to Menu',
     orderPendingMsg: 'Your order has been received. Please wait...',
     orderPreparingMsg: 'Your order is being prepared!',
-    orderReadyMsg: '🎉 Your order is ready! Please pick it up.',
+    orderReadyMsg: "🎉 Your order is ready! It's on the way.",
     orderCompletedMsg: 'Order completed. Thank you!',
     // Notes
     notes: 'Special Instructions',
@@ -158,7 +158,7 @@ export const translations = {
     backToMenu: 'گەڕانەوە بۆ مینیو',
     orderPendingMsg: 'داواکاریەکەت وەرگیرا. تکایە چاوەڕێ بکە...',
     orderPreparingMsg: 'داواکاریەکەت ئامادە دەکرێت!',
-    orderReadyMsg: '🎉 داواکاریەکەت ئامادەیە! تکایە وەری بگرە.',
+    orderReadyMsg: '🎉 داواکارییەکەت ئامادەیە! ئێستا بۆت دەهێنرێت.',
     orderCompletedMsg: 'داواکاری تەواو بوو. سوپاس!',
     // Notes
     notes: 'تێبینیی تایبەت',
