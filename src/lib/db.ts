@@ -173,6 +173,30 @@ export const db = {
     return order;
   },
 
+  async deleteOrder(id: string) {
+    if (supabase) {
+      const { error } = await supabase.from('orders').delete().eq('id', id);
+      if (error) throw error;
+      return true;
+    }
+    await delay(200);
+    const orders = loadMockOrders();
+    const filtered = orders.filter((o: any) => o.id !== id);
+    saveMockOrders(filtered);
+    return true;
+  },
+
+  async deleteAllOrders() {
+    if (supabase) {
+      const { error } = await supabase.from('orders').delete().neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+      if (error) throw error;
+      return true;
+    }
+    await delay(200);
+    saveMockOrders([]);
+    return true;
+  },
+
   async getOrdersByDateRange(startDate: string, endDate: string) {
     if (supabase) {
       const { data, error } = await supabase

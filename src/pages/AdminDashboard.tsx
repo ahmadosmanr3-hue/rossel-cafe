@@ -627,7 +627,21 @@ export default function AdminDashboard() {
         {/* ===================== REPORTS ===================== */}
         {activeTab === 'reports' && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold">{t('reports')}</h2>
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">{t('reports')}</h2>
+              <button
+                onClick={async () => {
+                  if (window.confirm(t('confirmClearAll'))) {
+                    await db.deleteAllOrders();
+                    fetchOrders();
+                  }
+                }}
+                className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-xl text-sm font-medium transition-colors flex items-center gap-2"
+              >
+                <Trash2 size={16} />
+                {t('clearAllData')}
+              </button>
+            </div>
 
             {/* Period Selector */}
             <div className="flex gap-2">
@@ -672,7 +686,7 @@ export default function AdminDashboard() {
                   <div className="p-8 text-center text-gray-500">{t('noOrders')}</div>
                 ) : (
                   reportOrders.map(order => (
-                    <div key={order.id} className="p-4 flex items-center gap-4 hover:bg-white/5 transition-colors">
+                    <div key={order.id} className="p-4 flex items-center gap-4 hover:bg-white/5 transition-colors group">
                       <div className="w-10 h-10 rounded-full bg-[var(--color-navy-700)] flex items-center justify-center font-bold border border-white/10">
                         {order.table_id}
                       </div>
@@ -690,6 +704,18 @@ export default function AdminDashboard() {
                       <span className="font-bold text-[var(--color-gold-400)] whitespace-nowrap">
                         {order.total_price_iqd?.toLocaleString()} IQD
                       </span>
+                      <button
+                        onClick={async () => {
+                          if (window.confirm(t('confirmDelete'))) {
+                            await db.deleteOrder(order.id);
+                            fetchOrders();
+                          }
+                        }}
+                        className="p-2 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                        title={t('deleteOrder')}
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   ))
                 )}

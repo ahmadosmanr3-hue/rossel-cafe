@@ -104,8 +104,11 @@ export const translations = {
     serviceFee: 'Service Fee',
     water: 'Water',
     quantity: 'Quantity',
-    amount: 'Amount',
     add: 'Add',
+    deleteOrder: 'Delete Order',
+    clearAllData: 'Clear All Data',
+    confirmDelete: 'Are you sure you want to delete this order?',
+    confirmClearAll: 'Are you sure you want to clear ALL report data? This cannot be undone.',
   },
   ku: {
     menu: 'مینیو',
@@ -212,7 +215,10 @@ export const translations = {
     serviceFee: 'خزمەتگوزاری',
     water: 'ئاو',
     quantity: 'بڕ',
-    amount: 'بڕی پارە',
     add: 'زیادکردن',
+    deleteOrder: 'سڕینەوەی داواکاری',
+    clearAllData: 'سڕینەوەی هەموو داتاکان',
+    confirmDelete: 'ئایا دڵنیایت لە سڕینەوەی ئەم داواکارییە؟',
+    confirmClearAll: 'ئایا دڵنیایت لە سڕینەوەی هەموو داتاکان؟ ئەم کارە ناگەڕێتەوە.',
   }
 };
