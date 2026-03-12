@@ -73,7 +73,13 @@ export default function CustomerMenu() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-[var(--color-navy-800)]/80 backdrop-blur-md border-b border-white/10 p-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-purple-500)] to-[var(--color-purple-600)] flex items-center justify-center font-bold text-white">R</div>
+          <button 
+            onClick={() => navigate('/admin')}
+            className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-purple-500)] to-[var(--color-purple-600)] flex items-center justify-center font-bold text-white hover:opacity-80 transition-opacity"
+            title={t('admin')}
+          >
+            R
+          </button>
           <h1 className="text-xl font-bold tracking-wider text-white">ROSEL</h1>
         </div>
         <div className="flex items-center gap-3">
